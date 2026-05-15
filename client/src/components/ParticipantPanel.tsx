@@ -24,7 +24,7 @@ function MicIcon({ active }: { active: boolean }) {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      title={active ? "Mic on" : "Mic off"}
+      aria-label={active ? "Mic on" : "Mic off"}
     >
       <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
       <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
@@ -45,7 +45,7 @@ function CameraIcon({ active }: { active: boolean }) {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      title={active ? "Camera on" : "Camera off"}
+      aria-label={active ? "Camera on" : "Camera off"}
     >
       <polygon points="23 7 16 12 23 17 23 7" />
       <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />

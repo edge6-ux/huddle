@@ -52,19 +52,6 @@ export default function RoomCard({ room, onDelete }: RoomCardProps) {
         >
           {room.name}
         </h3>
-        {room.meetings && (
-          <span
-            style={{
-              fontSize: "0.75rem",
-              color: "#6b7280",
-              whiteSpace: "nowrap",
-              marginLeft: "0.5rem",
-              flexShrink: 0,
-            }}
-          >
-            {room.meetings.length} meeting{room.meetings.length !== 1 ? "s" : ""}
-          </span>
-        )}
       </div>
 
       {/* Meeting link */}
