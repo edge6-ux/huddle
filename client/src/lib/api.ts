@@ -62,7 +62,9 @@ export interface Meeting {
 
 // ─── Fetch helper ─────────────────────────────────────────────────────────────
 
-const BASE_URL = "/api";
+const BASE_URL = import.meta.env.VITE_SERVER_URL
+  ? `${import.meta.env.VITE_SERVER_URL}/api`
+  : "/api";
 
 async function apiFetch(path: string, options?: RequestInit): Promise<Response> {
   const response = await fetch(`${BASE_URL}${path}`, {
