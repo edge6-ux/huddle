@@ -14,14 +14,16 @@ import { teamInviteRouter, inviteRouter } from "./routes/invites.js";
 const app = express();
 const port = parseInt(process.env.PORT ?? "3001", 10);
 
-app.use(
-  cors({
-    origin: process.env.CLIENT_URL ?? "http://localhost:5173",
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+const corsOptions = {
+  origin: process.env.CLIENT_URL ?? "http://localhost:5173",
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+// Handle preflight for all routes before Better Auth intercepts them
+app.options("*", cors(corsOptions));
+app.use(cors(corsOptions));
 
 // Better Auth must be before express.json()
 app.all("/api/auth/*", toNodeHandler(auth));
