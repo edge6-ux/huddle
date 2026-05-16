@@ -13,6 +13,7 @@ import { teamInviteRouter, inviteRouter } from "./routes/invites.js";
 
 const app = express();
 const port = parseInt(process.env.PORT ?? "3001", 10);
+const host = "0.0.0.0";
 
 const corsOptions = {
   origin: process.env.CLIENT_URL ?? "http://localhost:5173",
@@ -44,6 +45,14 @@ app.get("/health", (_req, res) => {
   res.json({ status: "ok", ts: new Date().toISOString() });
 });
 
-app.listen(port, () => {
-  console.log(`Huddle server running on http://localhost:${port}`);
+// Surface fatal startup errors so Railway logs show the real failure
+process.on("uncaughtException", (err) => {
+  console.error("[uncaughtException]", err);
+});
+process.on("unhandledRejection", (reason) => {
+  console.error("[unhandledRejection]", reason);
+});
+
+app.listen(port, host, () => {
+  console.log(`Huddle server listening on ${host}:${port}`);
 });
