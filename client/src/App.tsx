@@ -9,6 +9,7 @@ import Onboarding from "./pages/Onboarding";
 import WorkspaceHome from "./pages/WorkspaceHome";
 import TeamHome from "./pages/TeamHome";
 import InvitePage from "./pages/InvitePage";
+import DMPage from "./pages/DMPage";
 import AppShell from "./components/AppShell";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -52,6 +53,7 @@ function App() {
         >
           <Route path="/w/:slug" element={<WorkspaceHome />} />
           <Route path="/w/:slug/teams/:teamId" element={<TeamHome />} />
+          <Route path="/w/:slug/dm/:userId" element={<DMPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

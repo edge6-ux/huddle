@@ -12,6 +12,7 @@ import {
   type TeamMember,
   type TeamRole,
 } from "../lib/api";
+import TeamChat from "../components/TeamChat";
 
 const ROLE_LABEL: Record<TeamRole, string> = {
   OWNER: "Owner",
@@ -26,6 +27,7 @@ export default function TeamHome() {
 
   const { activeTeam, setActiveTeam, addRoom, removeRoom, setMembers, members } = useTeamStore();
 
+  const [tab, setTab] = useState<"rooms" | "members" | "chat">("rooms");
   const [loading, setLoading] = useState(false);
   const [inviteToken, setInviteToken] = useState<string | null>(null);
   const [inviteCopied, setInviteCopied] = useState(false);
@@ -130,10 +132,22 @@ export default function TeamHome() {
 
   const rooms = team.rooms ?? [];
 
+  const tabStyle = (t: typeof tab) => ({
+    padding: "0.375rem 1rem",
+    fontSize: "0.875rem",
+    fontWeight: 500,
+    border: "none",
+    borderRadius: "0.375rem",
+    cursor: "pointer" as const,
+    backgroundColor: tab === t ? "#6366f1" : "transparent",
+    color: tab === t ? "#fff" : "#6b7280",
+    transition: "background-color 0.15s, color 0.15s",
+  });
+
   return (
     <div style={{ padding: "2rem 2.5rem", maxWidth: "860px" }}>
       {/* Header */}
-      <div style={{ marginBottom: "2rem" }}>
+      <div style={{ marginBottom: "1.5rem" }}>
         <h1 style={{ fontSize: "1.5rem", fontWeight: 700, color: "#fff", margin: "0 0 0.375rem" }}>
           {team.name}
         </h1>
@@ -142,8 +156,17 @@ export default function TeamHome() {
         )}
       </div>
 
+      {/* Tabs */}
+      <div style={{ display: "flex", gap: "0.25rem", marginBottom: "1.5rem" }}>
+        <button style={tabStyle("rooms")} onClick={() => setTab("rooms")}>Rooms</button>
+        <button style={tabStyle("members")} onClick={() => setTab("members")}>Members</button>
+        <button style={tabStyle("chat")} onClick={() => setTab("chat")}>Chat</button>
+      </div>
+
+      {tab === "chat" && teamId && <TeamChat teamId={teamId} />}
+
       {/* Rooms section */}
-      <section style={{ marginBottom: "2.5rem" }}>
+      {tab === "rooms" && <section style={{ marginBottom: "2.5rem" }}>
         <div
           style={{
             display: "flex",
@@ -336,10 +359,10 @@ export default function TeamHome() {
             </button>
           </form>
         )}
-      </section>
+      </section>}
 
       {/* Members section */}
-      <section>
+      {tab === "members" && <section>
         <div
           style={{
             display: "flex",
@@ -499,6 +522,36 @@ export default function TeamHome() {
                   <div style={{ fontSize: "0.75rem", color: "#6b7280" }}>{member.user.email}</div>
                 </div>
 
+                {/* DM button */}
+                {!isMe && (
+                  <button
+                    onClick={() => navigate(`/w/${slug}/dm/${member.userId}`)}
+                    title={`Message ${member.user.name}`}
+                    style={{
+                      background: "none",
+                      border: "1px solid #2e2e2e",
+                      borderRadius: "0.375rem",
+                      color: "#6b7280",
+                      fontSize: "0.75rem",
+                      padding: "0.25rem 0.5rem",
+                      cursor: "pointer",
+                      transition: "border-color 0.15s, color 0.15s",
+                    }}
+                    onMouseEnter={(e) => {
+                      const btn = e.currentTarget as HTMLButtonElement;
+                      btn.style.borderColor = "#6366f1";
+                      btn.style.color = "#a5b4fc";
+                    }}
+                    onMouseLeave={(e) => {
+                      const btn = e.currentTarget as HTMLButtonElement;
+                      btn.style.borderColor = "#2e2e2e";
+                      btn.style.color = "#6b7280";
+                    }}
+                  >
+                    DM
+                  </button>
+                )}
+
                 {/* Role + actions */}
                 {canManage && !isMe && member.role !== "OWNER" ? (
                   <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
@@ -549,7 +602,7 @@ export default function TeamHome() {
             );
           })}
         </div>
-      </section>
+      </section>}
     </div>
   );
 }

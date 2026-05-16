@@ -10,6 +10,8 @@ import workspacesRouter from "./routes/workspaces.js";
 import teamsRouter from "./routes/teams.js";
 import membersRouter from "./routes/members.js";
 import { teamInviteRouter, inviteRouter } from "./routes/invites.js";
+import messagesRouter from "./routes/messages.js";
+import dmRouter from "./routes/dm.js";
 
 const app = express();
 const port = parseInt(process.env.PORT ?? "3001", 10);
@@ -40,6 +42,8 @@ app.use("/api/teams/:teamId/rooms", roomsRouter);
 app.use("/api/teams/:teamId/members", membersRouter);
 app.use("/api/teams/:teamId", teamInviteRouter);
 app.use("/api/invite", inviteRouter);
+app.use("/api/teams/:teamId/messages", messagesRouter);
+app.use("/api/dm", dmRouter);
 
 app.get("/health", (_req, res) => {
   res.json({ status: "ok", ts: new Date().toISOString() });

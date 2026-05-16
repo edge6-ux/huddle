@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(New-Item *)",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\edger\\\\OneDrive\\\\Documents\\\\Huddle\\\\client\\\\src\\\\\" -Recurse | ForEach-Object { $_.FullName })",
+      "Skill(update-config)",
+      "Bash(npm run *)",
+      "Bash(echo \"Server PID: $!\")",
+      "Bash(echo \"Client PID: $!\")",
+      "Read(//tmp/**)",
+      "Bash(kill 686)",
+      "PowerShell(Get-NetTCPConnection *)",
+      "PowerShell(cd \"C:\\\\Users\\\\edger\\\\OneDrive\\\\Documents\\\\Huddle\\\\server\"; $env:PRISMA_USER_CONSENT_FOR_DANGEROUS_AI_ACTION = \"Yes\"; npx prisma migrate reset --force 2>&1)",
+      "Bash(gh auth *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git remote *)",
+      "Bash(git push *)",
+      "Bash(npx tsc *)",
+      "Bash(Remove-Item *)",
+      "Bash(git commit --allow-empty -m ' *)",
+      "Bash(findstr /R \"\\\\.\\\\|\\\\.\")",
+      "Bash(git rm *)",
+      "Bash(npx prisma *)"
+    ]
+  }
+}

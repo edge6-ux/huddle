@@ -60,6 +60,25 @@ export interface Meeting {
   endedAt: string | null;
 }
 
+export interface Message {
+  id: string;
+  teamId: string;
+  senderId: string;
+  content: string;
+  createdAt: string;
+  sender: { id: string; name: string; image: string | null };
+}
+
+export interface DirectMessage {
+  id: string;
+  senderId: string;
+  receiverId: string;
+  content: string;
+  createdAt: string;
+  sender: { id: string; name: string; image: string | null };
+  receiver: { id: string; name: string; image: string | null };
+}
+
 // ─── Fetch helper ─────────────────────────────────────────────────────────────
 
 const BASE_URL = import.meta.env.VITE_SERVER_URL
@@ -255,5 +274,35 @@ export async function acceptInvite(
   token: string
 ): Promise<{ teamId: string; workspaceSlug: string }> {
   const response = await apiFetch(`/invite/${token}/accept`, { method: "POST" });
+  return response.json();
+}
+
+// ─── Messages ─────────────────────────────────────────────────────────────────
+
+export async function getTeamMessages(teamId: string, before?: string): Promise<Message[]> {
+  const params = before ? `?before=${encodeURIComponent(before)}` : "";
+  const response = await apiFetch(`/teams/${teamId}/messages${params}`);
+  return response.json();
+}
+
+export async function sendTeamMessage(teamId: string, content: string): Promise<Message> {
+  const response = await apiFetch(`/teams/${teamId}/messages`, {
+    method: "POST",
+    body: JSON.stringify({ content }),
+  });
+  return response.json();
+}
+
+export async function getDMs(userId: string, before?: string): Promise<DirectMessage[]> {
+  const params = before ? `?before=${encodeURIComponent(before)}` : "";
+  const response = await apiFetch(`/dm/${userId}${params}`);
+  return response.json();
+}
+
+export async function sendDM(userId: string, content: string): Promise<DirectMessage> {
+  const response = await apiFetch(`/dm/${userId}`, {
+    method: "POST",
+    body: JSON.stringify({ content }),
+  });
   return response.json();
 }
